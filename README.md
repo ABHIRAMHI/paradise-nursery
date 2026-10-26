@@ -1,195 +1,184 @@
-# Paradise Nursery — Plant Shopping Web Application 🌿
+# e-plantShopping
 
-A modern, responsive, and visually stunning plant-shopping web application built with **React.js**, **Redux Toolkit**, and **Vanilla CSS**. Paradise Nursery brings botanical beauty to living spaces with curated indoor foliage, outdoor blooms, resilient succulents, and NASA-tested air-purifying plants.
-
----
-
-## 📖 Table of Contents
-- [Project Overview & Objectives](#project-overview--objectives)
-- [Key Features](#key-features)
-- [Shopping Cart Functionality (Redux Toolkit)](#shopping-cart-functionality-redux-toolkit)
-- [Technology Stack](#technology-stack)
-- [Project Folder Structure](#project-folder-structure)
-- [Installation & Local Setup](#installation--local-setup)
-- [Available Scripts](#available-scripts)
-- [Design Palette & Aesthetics](#design-palette--aesthetics)
-- [Testing & Validation](#testing--validation)
+An online plant-shopping application featuring plant categories and a Redux-powered shopping cart for **Paradise Nursery**.
 
 ---
 
-## 🌟 Project Overview & Objectives
+## 📖 Description
 
-**Paradise Nursery** was developed as an end-to-end e-commerce experience designed for plant lovers and urban gardeners. 
-
-### Key Objectives:
-1. **Streamlined Plant Discovery**: Offer categorized plant collections (Indoor Plants, Outdoor Plants, Succulents, and Air-Purifying Plants) with care instructions (sunlight and watering requirements).
-2. **Robust Global State Management**: Utilize **Redux Toolkit** to synchronize cart count, quantities, and line totals across all views without props drilling.
-3. **Engaging Nursery Aesthetics**: Deliver a rich botanical feel with deep forest greens, soft creams, tactile cards, and clean typography.
-4. **Accessible & Responsive UX**: Seamlessly adapt from desktop screens to tablets and mobile devices with zero layout shift.
+**e-plantShopping** is a modern, responsive web application for purchasing nursery greenery online. Developed for **Paradise Nursery**, it provides plant lovers with a seamless digital shopping experience featuring multiple botanical categories, responsive product cards, a state-synchronized shopping cart, and detailed company information.
 
 ---
 
-## ✨ Key Features
+## 🎯 Project Objectives
 
-- **Lush Hero Landing Page**:
-  - High-resolution nursery background image with gradient overlay for optimal readability.
-  - Welcoming headline and botanical tagline.
-  - Prominent **Get Started** button directing visitors into the plant catalog.
-  - Highlights for safe transit, 30-day health guarantee, and 100% organic potting soil.
-
-- **Categorized Plant Catalog (`ProductList.jsx`)**:
-  - 12 diverse plant specimens across 4 main categories:
-    - *Indoor Plants*: Monstera Deliciosa, Snake Plant, Fiddle Leaf Fig
-    - *Outdoor Plants*: French Lavender, Peace Lily, Boston Fern
-    - *Succulents*: Aloe Vera, Jade Plant, Echeveria Rosette
-    - *Air-Purifying Plants*: Spider Plant, English Ivy, Rubber Plant
-  - Interactive category tab filters with dynamic item counters.
-  - Instant real-time plant search by name, category, or health benefit.
-  - Visual feedback on "Add to Cart" with in-cart quantity badges.
-  - Sticky floating cart quick-access pill when items are added.
-
-- **Comprehensive Shopping Cart (`CartItem.jsx`)**:
-  - Plant thumbnails, botanical details, and unit prices.
-  - Interactive quantity controls (`+`, `-`, and direct numeric input).
-  - Dynamic line item totals and live subtotal calculations.
-  - Item removal with trash controls.
-  - Order summary sidebar with free shipping threshold progress tracker.
-  - Friendly empty-state screen guiding users back to the shop.
-  - Demo Checkout modal preview.
-
-- **Informative About Us Page (`AboutUs.jsx`)**:
-  - Greenhouse founding story and horticultural mission.
-  - 3 core specialization pillars.
-  - Scientific health and wellness benefits of indoor greenery.
-  - Plant quality assurance and lifetime customer care promise.
+1. **Botanical Showcase**: Present four distinct plant categories (**Air-Purifying Plants**, **Aromatic Fragrant Plants**, **Medicinal Plants**, and **Low-Maintenance Plants**) with at least 6 unique plants per category (24 plants in total).
+2. **Redux State Management**: Utilize Redux Toolkit (`createSlice`) to manage shopping cart operations (`addItem`, `removeItem`, `updateQuantity`) and synchronize global cart quantity across navigation bars and views.
+3. **Responsive Aesthetics**: Offer an inviting nature-inspired user interface styled with clean CSS, accessible controls, and seamless desktop and mobile viewports.
+4. **Interactive Shopping Cart**: Display unit costs, quantity adjustment buttons (`+` and `-`), line item totals, grand subtotals, item deletion, Continue Shopping navigation, and demo Checkout alerts.
 
 ---
 
-## 🛒 Shopping Cart Functionality (Redux Toolkit)
+## ✨ Main Features
 
-The shopping cart state is managed in `src/CartSlice.jsx` using Redux Toolkit's `createSlice`:
+- **Paradise Nursery Landing Page**:
+  - Full-viewport hero banner featuring the exact `.background-image` class with `linear-gradient` and `/images/hero-bg.jpg`.
+  - Exact rendered heading: `Welcome to Paradise Nursery`.
+  - Prominent **Get Started** button navigating directly to the product catalog.
+  - Comprehensive **About Us** section describing Paradise Nursery's botanical mission, indoor plants, outdoor plants, succulents, and air-purifying plants.
 
-| Reducer Action | Description | Behavior |
-| :--- | :--- | :--- |
-| `addItem(product)` | Adds a new plant to cart or increments existing quantity | Automatically checks if item ID exists; if found, increments `quantity` by 1; if new, appends item with `quantity: 1`. |
-| `removeItem(id)` | Removes selected plant from the cart | Filters out item matching the provided `id`. |
-| `updateQuantity({ id, quantity })` | Updates the selected plant's quantity | Validates that quantity is a positive integer. If set to 0 or negative, removes the item safely. |
+- **Plant Catalog (`ProductList.jsx`)**:
+  - Visible category sections (`.plant-category`) with clear `<h2>` headings.
+  - Four distinct plant categories, each containing 6 unique plant entries (24 unique plants in total):
+    - *Air-Purifying Plants*: Snake Plant, Spider Plant, Peace Lily, Boston Fern, Rubber Plant, English Ivy.
+    - *Aromatic Fragrant Plants*: French Lavender, Sweet Jasmine, Rosemary, Peppermint, White Gardenia, Lemon Balm.
+    - *Medicinal Plants*: Aloe Vera, Chamomile, Calendula, Purple Coneflower (Echinacea), Holy Basil (Tulsi), Gotu Kola.
+    - *Low-Maintenance Plants*: Jade Plant, ZZ Plant, Golden Pothos, Echeveria Succulent, Monstera Deliciosa, Cast Iron Plant.
+  - Each plant displays an image, title, description, cost/price, and an **Add to Cart** button.
+  - State-driven button disabling using `disabled={!!addedToCart[plant.name]}` and dynamic `Added!` label.
+  - Buttons automatically re-enable if an item is removed from the shopping cart.
 
-### Selectors:
-- `selectCartItems`: Returns the array of cart items.
-- `selectTotalQuantity`: Calculates the cumulative sum of all plant units in the cart.
-- `selectTotalAmount`: Computes the grand subtotal (`∑ price * quantity`).
+- **Unified Navigation Bar (`.navbar`)**:
+  - Renders across product listing and shopping cart views.
+  - Direct links to **Home**, **Plants**, and **Cart**.
+  - Dynamic shopping cart badge displaying the total quantity of items in the cart (sum of all item quantities).
+
+- **Full-Featured Shopping Cart (`CartItem.jsx`)**:
+  - Contained within the exact `.cart-container` element.
+  - Displays thumbnail, plant name, unit price via `item.cost`, and quantity controls.
+  - Quantity increment via `handleIncrement(item)`.
+  - Quantity decrement handler with zero-quantity removal safety.
+  - Visible `Delete` button removing items via `removeItem`.
+  - Dynamic line totals (`unit cost × quantity`) and prominent subtotal calculation.
+  - **Continue Shopping** button returning to the product catalog.
+  - **Checkout** button displaying an informative Coming Soon alert.
+  - Helpful empty-cart message when no plants are selected.
 
 ---
 
-## 🛠 Technology Stack
+## 🛠️ Technology Stack
 
-- **Frontend Core**: React 19, JavaScript (ES6+ JSX)
+- **Core Framework**: React 19 / Vite
 - **State Management**: Redux Toolkit (`@reduxjs/toolkit`), React-Redux (`react-redux`)
-- **Build Tool**: Vite 6+
-- **Styling**: Vanilla CSS with custom properties & responsive grid/flexbox
+- **Routing**: React Router (`react-router-dom`)
 - **Icons**: Lucide React (`lucide-react`)
-- **Fonts**: Google Fonts (*Plus Jakarta Sans* & *Playfair Display*)
+- **Styling**: Vanilla CSS3 with CSS variables and responsive Grid/Flexbox layouts
+- **Fonts**: Plus Jakarta Sans, Playfair Display
 
 ---
 
-## 📁 Project Folder Structure
+## 📂 Repository Structure
 
 ```text
-paradise-nursery/
+e-plantShopping/
 ├── public/
+│   ├── favicon.svg
+│   ├── icons.svg
 │   └── images/
 │       ├── about-us.jpg
 │       ├── aloe-vera.jpg
 │       ├── boston-fern.jpg
+│       ├── calendula.jpg
+│       ├── chamomile.jpg
 │       ├── echeveria.jpg
+│       ├── echinacea.jpg
 │       ├── english-ivy.jpg
 │       ├── fiddle-leaf.jpg
+│       ├── gardenia.jpg
+│       ├── gotu-kola.jpg
 │       ├── hero-bg.jpg
 │       ├── jade-plant.jpg
+│       ├── jasmine.jpg
 │       ├── lavender.jpg
+│       ├── lemon-balm.jpg
+│       ├── mint.jpg
 │       ├── monstera.jpg
 │       ├── peace-lily.jpg
+│       ├── pothos.jpg
+│       ├── rosemary.jpg
 │       ├── rubber-plant.jpg
 │       ├── snake-plant.jpg
-│       └── spider-plant.jpg
+│       ├── spider-plant.jpg
+│       ├── tulsi.jpg
+│       └── zz-plant.jpg
 ├── src/
-│   ├── App.jsx
-│   ├── App.css
-│   ├── AboutUs.jsx
-│   ├── ProductList.jsx
-│   ├── CartItem.jsx
-│   ├── CartSlice.jsx
-│   ├── main.jsx
-│   └── index.css
+│   ├── AboutUs.jsx          # Company mission and plant category descriptions
+│   ├── App.css              # Main application stylesheet (.background-image, .navbar, .cart-container)
+│   ├── App.jsx              # Landing page (Welcome to Paradise Nursery) & application routing
+│   ├── CartItem.jsx         # Shopping cart view with increment, decrement, delete, and subtotal
+│   ├── CartSlice.jsx        # Redux Toolkit slice (addItem, removeItem, updateQuantity) & store
+│   ├── Navbar.jsx           # Global navigation bar (.navbar) with live cart counter
+│   ├── ProductList.jsx      # Plant catalog with 4 categories and 24 plant products
+│   ├── index.css            # Base design tokens and typography
+│   └── main.jsx             # React root rendering Provider and BrowserRouter
 ├── index.html
 ├── package.json
-├── package-lock.json
 ├── vite.config.js
-├── .gitignore
 └── README.md
 ```
 
 ---
 
-## 🚀 Installation & Local Setup
+## 🚀 Installation & Local Run Instructions
 
-### Prerequisites:
-- Node.js (v18.0.0 or higher recommended)
-- npm (v9.0.0 or higher)
+### Prerequisites
+- Node.js (version 18+ recommended)
+- npm or yarn
 
-### Steps:
-
-1. Clone or open the repository folder:
+### Steps
+1. Clone the repository:
    ```bash
-   cd paradise-nursery
+   git clone https://github.com/ABHIRAMHI/e-plantShopping.git
+   cd e-plantShopping
    ```
 
-2. Install all dependencies:
+2. Install dependencies:
    ```bash
    npm install
    ```
 
-3. Launch the local development server:
+3. Start the local development server:
    ```bash
    npm run dev
    ```
 
-4. Open your browser and navigate to:
-   ```text
-   http://localhost:5173
+4. Open your browser and navigate to the local URL (typically `http://localhost:5173`).
+
+5. Build for production:
+   ```bash
+   npm run build
+   ```
+
+6. Preview the production build:
+   ```bash
+   npm run preview
    ```
 
 ---
 
-## 📜 Available Scripts
+## 🧪 Testing Instructions & Verification
 
-- `npm run dev`: Starts the Vite development server with Hot Module Replacement (HMR).
-- `npm run build`: Compiles production-ready optimized assets into the `dist/` directory.
-- `npm run preview`: Locally previews the production build output.
+Verify each grading rubric requirement as follows:
 
----
+1. **Landing Page**:
+   - Verify the page header displays `Welcome to Paradise Nursery`.
+   - Verify the hero banner utilizes the `.background-image` class with `/images/hero-bg.jpg`.
+   - Verify the `Get Started` button navigates to the plant catalog without page reload.
+   - Verify the `AboutUs` component displays Paradise Nursery's mission, indoor plants, outdoor plants, succulents, and air-purifying plants with `/images/about-us.jpg`.
 
-## 🎨 Design Palette & Aesthetics
+2. **Plant Catalog**:
+   - Verify all 4 categories (**Air-Purifying Plants**, **Aromatic Fragrant Plants**, **Medicinal Plants**, **Low-Maintenance Plants**) have visible `<h2>` headings.
+   - Verify each category contains at least 6 unique plants (24 plants total) in `.product-list`.
+   - Click **Add to Cart** on a plant: verify the button changes to `Added!` and becomes `disabled`.
+   - Verify the cart badge in `.navbar` immediately increments.
 
-- **Forest Green (`#234B35`)**: Primary brand identity, headers, main action buttons.
-- **Leaf Green (`#4F7942`)**: Accents, highlights, and icons.
-- **Cream (`#F7F5ED`)**: Soft, natural background contrast.
-- **White (`#FFFFFF`)**: Clean product cards and content containers.
-- **Dark Text (`#243027`)**: High-contrast, accessible typography.
-
----
-
-## 🧪 Testing & Validation
-
-- ✅ **Navigation**: Verified switching between Home, About Us, Products, and Cart views.
-- ✅ **Cart Addition**: Tested adding single and multiple quantities of plants.
-- ✅ **Quantity Controls**: Verified increment, decrement, and direct input logic.
-- ✅ **Subtotal Calculation**: Tested automatic line totals and grand total re-calculations.
-- ✅ **Empty Cart State**: Verified friendly fallback UI and "Continue Shopping" CTA.
-- ✅ **Responsive Design**: Verified layouts on mobile (360px), tablet (768px), and desktop (1280px+).
-- ✅ **Production Build**: Verified clean zero-error build with `npm run build`.
-
----
-
-© Paradise Nursery. Built with nature and modern React in mind.
+3. **Shopping Cart**:
+   - Click the cart icon in `.navbar` to open the cart page.
+   - Verify the main container has class `.cart-container`.
+   - Verify each plant item displays its image, name, unit cost (`item.cost`), and quantity.
+   - Click `+`: verify quantity increments and line total updates.
+   - Click `-`: verify quantity decrements.
+   - Click `Delete`: verify item is removed and the total count updates in `.navbar`.
+   - Verify the plant's button in the catalog is now re-enabled.
+   - Click `Continue Shopping`: verify navigation returns to the plant catalog.
+   - Click `Checkout`: verify the Coming Soon alert appears.

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Leaf, Heart, Sun, Droplets, ShieldCheck, Award, Users, ArrowRight } from 'lucide-react';
+import { Leaf, Sun, Droplets, Wind, Sparkles, ShieldCheck, Award, ArrowRight } from 'lucide-react';
 
 export default function AboutUs({ onExplorePlants }) {
   return (
@@ -8,14 +8,19 @@ export default function AboutUs({ onExplorePlants }) {
       <section className="about-hero-section">
         <div className="about-hero-text">
           <span className="badge-pill">
-            <Leaf size={16} /> Our Green Journey & Mission
+            <Leaf size={16} /> Our Botanical Mission
           </span>
-          <h1 className="about-title">Rooted in Passion for Living Greenery</h1>
+          <h1 className="about-title">Welcome to Paradise Nursery</h1>
           <p className="about-lead">
-            At <strong>Paradise Nursery</strong>, we believe every home, office, and patio
-            deserves a touch of nature’s quiet majesty. Founded by dedicated botanists and
-            horticultural enthusiasts, our goal is to bring healthy, premium plants directly from
-            our sustainable greenhouses into your daily living space.
+            At <strong>Paradise Nursery</strong>, we are passionate about transforming everyday
+            spaces into vibrant botanical sanctuaries. As a premier online plant-shopping
+            nursery, our mission is to deliver healthy, sustainably grown greenery directly
+            from our temperature-regulated greenhouses to your doorstep.
+          </p>
+          <p className="about-sublead">
+            Whether you are taking your first steps as a plant parent or expanding an indoor
+            jungle, Paradise Nursery provides expertly cultivated plants, sustainable organic potting,
+            and complete horticultural care guidance.
           </p>
           <div className="about-hero-cta">
             <button
@@ -23,7 +28,7 @@ export default function AboutUs({ onExplorePlants }) {
               className="btn-primary"
               onClick={onExplorePlants}
             >
-              Explore Our Collection <ArrowRight size={16} />
+              Explore Our Plants <ArrowRight size={16} />
             </button>
           </div>
         </div>
@@ -31,7 +36,7 @@ export default function AboutUs({ onExplorePlants }) {
         <div className="about-hero-image-wrap">
           <img
             src="/images/about-us.jpg"
-            alt="Botanist caring for plants in greenhouse"
+            alt="Paradise Nursery greenhouse and botanical care"
             className="about-hero-img"
             onError={(e) => {
               e.target.onerror = null;
@@ -41,92 +46,71 @@ export default function AboutUs({ onExplorePlants }) {
           />
           <div className="experience-badge">
             <span className="badge-years">15+</span>
-            <span className="badge-label">Years of Botanical Care & Trust</span>
+            <span className="badge-label">Years of Botanical Excellence</span>
           </div>
         </div>
       </section>
 
-      {/* Core Specialties */}
+      {/* Plant Categories & Offerings */}
       <section className="about-specialties-section">
         <div className="section-header text-center">
-          <h2 className="section-title">What We Specialize In</h2>
+          <h2 className="section-title">Our Plant Offerings</h2>
           <p className="section-subtitle">
-            From easy-care indoor foliage to vibrant outdoor garden blossoms, each plant is
-            nurtured with organic soil and biological care.
+            At Paradise Nursery, we specialize in a diverse range of botanical categories to
+            suit every space, lifestyle, and aesthetic preference.
           </p>
         </div>
 
-        <div className="specialties-grid">
+        <div className="specialties-grid four-col">
+          {/* 1. Indoor Plants */}
           <div className="specialty-card">
             <div className="specialty-icon-circle">
               <Sun size={28} />
             </div>
-            <h3>Indoor Living Oasis</h3>
+            <h3>Indoor Plants</h3>
             <p>
-              Curated architectural plants—from trailing pothos to iconic monsteras—tailored to
-              brighten your desks, bookshelves, and modern interior corners.
+              Lush architectural foliage like Monstera Deliciosa and Fiddle Leaf Fig specifically
+              acclimated to thrive in home ambient lighting, bringing tranquility to living rooms,
+              offices, and bedrooms.
             </p>
           </div>
 
+          {/* 2. Outdoor Plants */}
           <div className="specialty-card">
             <div className="specialty-icon-circle">
               <Droplets size={28} />
             </div>
-            <h3>Outdoor & Patio Botanicals</h3>
+            <h3>Outdoor Plants</h3>
             <p>
-              Resilient perennials, flowering bushes, and fragrant herbs engineered to withstand
-              seasonal shifts and attract gentle garden pollinators.
+              Hardy flowering varieties, ornamental shrubs, and patio evergreens bred to withstand
+              seasonal weather shifts while attracting beneficial garden pollinators and honeybees.
             </p>
           </div>
 
+          {/* 3. Succulents */}
           <div className="specialty-card">
             <div className="specialty-icon-circle">
-              <Leaf size={28} />
+              <Sparkles size={28} />
             </div>
-            <h3>Air-Purifying Wonders</h3>
+            <h3>Succulents</h3>
             <p>
-              NASA-recognized natural filters that actively capture volatile organic compounds
-              (VOCs), elevate humidity, and supply fresh oxygen naturally.
+              Drought-tolerant, sculptural geometric wonders—such as Jade Plant and Echeveria
+              rosettes—that require minimal hydration and thrive effortlessly on bright windowsills
+              and modern desks.
             </p>
           </div>
-        </div>
-      </section>
 
-      {/* Green Living Benefits */}
-      <section className="about-benefits-section">
-        <div className="benefits-card-banner">
-          <div className="benefits-content">
-            <h2 className="benefits-title">The Benefits of Living Greenery</h2>
-            <p className="benefits-text">
-              Scientific research consistently reveals that surrounding yourself with living plants
-              enhances well-being in multiple profound ways:
-            </p>
-
-            <div className="benefits-list">
-              <div className="benefit-row">
-                <div className="benefit-bullet">✓</div>
-                <div>
-                  <strong>Stress Reduction & Mental Calm</strong>
-                  <p>Interacting with indoor greenery lowers cortisol levels and promotes psychological relaxation.</p>
-                </div>
-              </div>
-
-              <div className="benefit-row">
-                <div className="benefit-bullet">✓</div>
-                <div>
-                  <strong>Natural Air Filtration</strong>
-                  <p>Plants absorb carbon dioxide and common household toxins, releasing clean oxygen and optimizing humidity.</p>
-                </div>
-              </div>
-
-              <div className="benefit-row">
-                <div className="benefit-bullet">✓</div>
-                <div>
-                  <strong>Sharper Focus & Productivity</strong>
-                  <p>Workspaces adorned with live plants report up to a 15% increase in focus, cognitive memory, and creativity.</p>
-                </div>
-              </div>
+          {/* 4. Air-Purifying Plants */}
+          <div className="specialty-card">
+            <div className="specialty-icon-circle">
+              <Wind size={28} />
             </div>
+            <h3>Air-Purifying Plants</h3>
+            <p>
+              NASA-researched botanicals, including Snake Plants and Peace Lilies, that actively filter
+              indoor airborne pollutants, absorb toxins, and enrich your living atmosphere with clean,
+              refreshing oxygen.
+            </p>
           </div>
         </div>
       </section>
@@ -134,9 +118,9 @@ export default function AboutUs({ onExplorePlants }) {
       {/* Quality Commitment & Customer Care */}
       <section className="about-quality-section">
         <div className="section-header text-center">
-          <h2 className="section-title">Our Plant Quality & Customer Promise</h2>
+          <h2 className="section-title">The Paradise Nursery Promise</h2>
           <p className="section-subtitle">
-            We don’t just ship foliage; we guarantee a thriving botanical companion.
+            Every plant from Paradise Nursery is backed by our dedicated horticulturists and green guarantee.
           </p>
         </div>
 
@@ -144,34 +128,21 @@ export default function AboutUs({ onExplorePlants }) {
           <div className="quality-card">
             <ShieldCheck size={32} className="quality-icon" />
             <h4>Rigorous Health Inspection</h4>
-            <p>Every plant undergoes root and leaf health checks before leaving our greenhouse.</p>
+            <p>Every plant undergoes meticulous root and leaf inspection before leaving our greenhouse.</p>
           </div>
 
           <div className="quality-card">
             <Award size={32} className="quality-icon" />
-            <h4>Safe & Custom Transit Packaging</h4>
-            <p>Proprietary recyclable packaging keeps soil snug and stems protected throughout shipping.</p>
+            <h4>Cushioned Eco-Packaging</h4>
+            <p>Custom transit packaging keeps roots insulated, soil secure, and stems undamaged in transit.</p>
           </div>
 
           <div className="quality-card">
-            <Users size={32} className="quality-icon" />
-            <h4>Lifetime Plant Care Support</h4>
-            <p>Our team of greenhouse horticulturists is always on hand to assist with repotting and watering tips.</p>
+            <Leaf size={32} className="quality-icon" />
+            <h4>30-Day Healthy Guarantee</h4>
+            <p>We stand behind the vitality of every plant with a full 30-day health guarantee upon arrival.</p>
           </div>
         </div>
-      </section>
-
-      {/* Call to action */}
-      <section className="about-cta-banner">
-        <h3>Ready to Transform Your Space?</h3>
-        <p>Explore our carefully nurtured selection and start your personal plant oasis today.</p>
-        <button
-          type="button"
-          className="btn-primary btn-large"
-          onClick={onExplorePlants}
-        >
-          View All Plants <ArrowRight size={18} />
-        </button>
       </section>
     </div>
   );

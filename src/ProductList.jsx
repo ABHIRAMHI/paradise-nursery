@@ -1,381 +1,392 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addItem, selectCartItems, selectTotalQuantity } from './CartSlice.jsx';
-import { ShoppingBag, Check, Search, Filter, Sparkles, Leaf, ArrowRight } from 'lucide-react';
+import { addItem, selectCartItems } from './CartSlice.jsx';
+import Navbar from './Navbar.jsx';
+import CartItem from './CartItem.jsx';
+import { useNavigate } from 'react-router-dom';
+import { Check, ShoppingBag, Sparkles } from 'lucide-react';
 
 export const plantProducts = [
+  // Category 1: Air-Purifying Plants
   {
-    id: 'plant-1',
-    name: 'Monstera Deliciosa',
-    price: 34.99,
-    category: 'Indoor Plants',
-    description: 'Iconic split leaves that bring a lush tropical vibe and natural drama to any room.',
-    image: '/images/monstera.jpg',
-    sunlight: 'Bright indirect',
-    water: 'Weekly',
-  },
-  {
-    id: 'plant-2',
-    name: 'Snake Plant (Sansevieria)',
-    price: 26.50,
-    category: 'Indoor Plants',
-    description: 'Hardy architectural upright sword leaves that thrive on neglect and tolerate low light.',
+    id: 'air-1',
+    name: 'Snake Plant',
+    cost: '$18',
+    price: 18,
+    category: 'Air-Purifying Plants',
+    description: 'Produces oxygen at night and efficiently filters benzene and formaldehyde.',
     image: '/images/snake-plant.jpg',
-    sunlight: 'Low to bright',
-    water: 'Bi-weekly',
   },
   {
-    id: 'plant-3',
-    name: 'Fiddle Leaf Fig',
-    price: 45.00,
-    category: 'Indoor Plants',
-    description: 'Stately violin-shaped foliage that serves as an instant interior designer centerpiece.',
-    image: '/images/fiddle-leaf.jpg',
-    sunlight: 'Bright indirect',
-    water: 'Weekly',
-  },
-  {
-    id: 'plant-4',
-    name: 'French Lavender',
-    price: 18.00,
-    category: 'Outdoor Plants',
-    description: 'Aromatic purple blooms that attract friendly pollinators and offer calming natural fragrance.',
-    image: '/images/lavender.jpg',
-    sunlight: 'Full sun',
-    water: 'Moderate',
-  },
-  {
-    id: 'plant-5',
-    name: 'Peace Lily (Spathiphyllum)',
-    price: 29.99,
-    category: 'Outdoor Plants',
-    description: 'Elegant white spathes paired with deep green leaves; excels in shaded verandas and patios.',
-    image: '/images/peace-lily.jpg',
-    sunlight: 'Partial shade',
-    water: 'Keep moist',
-  },
-  {
-    id: 'plant-6',
-    name: 'Boston Fern',
-    price: 22.00,
-    category: 'Outdoor Plants',
-    description: 'Feathery cascading fronds, perfect for hanging baskets, shaded porches, and moist areas.',
-    image: '/images/boston-fern.jpg',
-    sunlight: 'Indirect light',
-    water: 'High humidity',
-  },
-  {
-    id: 'plant-7',
-    name: 'Aloe Vera',
-    price: 15.99,
-    category: 'Succulents',
-    description: 'Plump soothing succulent known for natural skin benefits and minimal watering needs.',
-    image: '/images/aloe-vera.jpg',
-    sunlight: 'Direct sunlight',
-    water: 'Dry between waters',
-  },
-  {
-    id: 'plant-8',
-    name: 'Jade Plant (Crassula)',
-    price: 19.50,
-    category: 'Succulents',
-    description: 'Symbol of good luck and prosperity featuring thick woody stems and glossy jade-green leaves.',
-    image: '/images/jade-plant.jpg',
-    sunlight: 'Bright light',
-    water: 'Sparse',
-  },
-  {
-    id: 'plant-9',
-    name: 'Echeveria Rosette',
-    price: 12.99,
-    category: 'Succulents',
-    description: 'Charming geometric rosette succulent displaying subtle pastel tones and extreme drought tolerance.',
-    image: '/images/echeveria.jpg',
-    sunlight: 'Full sun',
-    water: 'Every 2 weeks',
-  },
-  {
-    id: 'plant-10',
+    id: 'air-2',
     name: 'Spider Plant',
-    price: 16.50,
+    cost: '$15',
+    price: 15,
     category: 'Air-Purifying Plants',
-    description: 'NASA-proven powerhouse for neutralizing airborne toxins, completely non-toxic for pets.',
+    description: 'Proven by NASA research to cleanse household air of airborne toxins.',
     image: '/images/spider-plant.jpg',
-    sunlight: 'Medium indirect',
-    water: 'Weekly',
   },
   {
-    id: 'plant-11',
-    name: 'English Ivy',
-    price: 21.00,
+    id: 'air-3',
+    name: 'Peace Lily',
+    cost: '$22',
+    price: 22,
     category: 'Air-Purifying Plants',
-    description: 'Classic trailing vine that efficiently filters indoor mold particles and benzene pollutants.',
-    image: '/images/english-ivy.jpg',
-    sunlight: 'Medium to low',
-    water: 'Moderate',
+    description: 'Graceful white blooms that absorb mold spores and purify humid air.',
+    image: '/images/peace-lily.jpg',
   },
   {
-    id: 'plant-12',
-    name: 'Rubber Plant (Ficus Elastica)',
-    price: 32.00,
+    id: 'air-4',
+    name: 'Boston Fern',
+    cost: '$19',
+    price: 19,
     category: 'Air-Purifying Plants',
-    description: 'Broad glossy burgundy-toned foliage that purifies air and elevates modern home decor.',
+    description: 'Lush feathery fronds that act as a natural indoor humidifier and air purifier.',
+    image: '/images/boston-fern.jpg',
+  },
+  {
+    id: 'air-5',
+    name: 'Rubber Plant',
+    cost: '$25',
+    price: 25,
+    category: 'Air-Purifying Plants',
+    description: 'Glossy thick foliage that removes carbon monoxide and airborne impurities.',
     image: '/images/rubber-plant.jpg',
-    sunlight: 'Bright filtered',
-    water: 'Weekly',
+  },
+  {
+    id: 'air-6',
+    name: 'English Ivy',
+    cost: '$16',
+    price: 16,
+    category: 'Air-Purifying Plants',
+    description: 'Hardy trailing evergreen known for reducing airborne mold particles.',
+    image: '/images/english-ivy.jpg',
+  },
+
+  // Category 2: Aromatic Fragrant Plants
+  {
+    id: 'arom-1',
+    name: 'French Lavender',
+    cost: '$18',
+    price: 18,
+    category: 'Aromatic Fragrant Plants',
+    description: 'Calming floral aroma that naturally soothes stress and promotes deep sleep.',
+    image: '/images/lavender.jpg',
+  },
+  {
+    id: 'arom-2',
+    name: 'Sweet Jasmine',
+    cost: '$20',
+    price: 20,
+    category: 'Aromatic Fragrant Plants',
+    description: 'Exquisite sweet fragrance that fills rooms with pure botanical tranquility.',
+    image: '/images/jasmine.jpg',
+  },
+  {
+    id: 'arom-3',
+    name: 'Rosemary',
+    cost: '$15',
+    price: 15,
+    category: 'Aromatic Fragrant Plants',
+    description: 'Woody herbaceous evergreen scent known to boost memory and focus.',
+    image: '/images/rosemary.jpg',
+  },
+  {
+    id: 'arom-4',
+    name: 'Peppermint',
+    cost: '$12',
+    price: 12,
+    category: 'Aromatic Fragrant Plants',
+    description: 'Invigorating mint aroma that refreshes the senses and repels indoor insects.',
+    image: '/images/mint.jpg',
+  },
+  {
+    id: 'arom-5',
+    name: 'White Gardenia',
+    cost: '$24',
+    price: 24,
+    category: 'Aromatic Fragrant Plants',
+    description: 'Velvety fragrant flowers providing luxurious garden-fresh natural perfume.',
+    image: '/images/gardenia.jpg',
+  },
+  {
+    id: 'arom-6',
+    name: 'Lemon Balm',
+    cost: '$14',
+    price: 14,
+    category: 'Aromatic Fragrant Plants',
+    description: 'Crisp citrus aroma that uplifts your mood and revitalizes workspace air.',
+    image: '/images/lemon-balm.jpg',
+  },
+
+  // Category 3: Medicinal Plants
+  {
+    id: 'med-1',
+    name: 'Aloe Vera',
+    cost: '$14',
+    price: 14,
+    category: 'Medicinal Plants',
+    description: 'Gel-filled leaves renowned for healing skin burns and natural soothing.',
+    image: '/images/aloe-vera.jpg',
+  },
+  {
+    id: 'med-2',
+    name: 'Chamomile',
+    cost: '$16',
+    price: 16,
+    category: 'Medicinal Plants',
+    description: 'Daisy-like blossoms celebrated for calming infusions and medicinal tea.',
+    image: '/images/chamomile.jpg',
+  },
+  {
+    id: 'med-3',
+    name: 'Calendula',
+    cost: '$15',
+    price: 15,
+    category: 'Medicinal Plants',
+    description: 'Golden marigold blooms historically used in soothing skin salves.',
+    image: '/images/calendula.jpg',
+  },
+  {
+    id: 'med-4',
+    name: 'Purple Coneflower (Echinacea)',
+    cost: '$18',
+    price: 18,
+    category: 'Medicinal Plants',
+    description: 'Iconic medicinal herb valued for immune support and vibrant petals.',
+    image: '/images/echinacea.jpg',
+  },
+  {
+    id: 'med-5',
+    name: 'Holy Basil (Tulsi)',
+    cost: '$12',
+    price: 12,
+    category: 'Medicinal Plants',
+    description: 'Sacred adaptogenic herb recognized for reducing stress and promoting vitality.',
+    image: '/images/tulsi.jpg',
+  },
+  {
+    id: 'med-6',
+    name: 'Gotu Kola',
+    cost: '$17',
+    price: 17,
+    category: 'Medicinal Plants',
+    description: 'Ancient Ayurvedic restorative herb supporting mental clarity and wellness.',
+    image: '/images/gotu-kola.jpg',
+  },
+
+  // Category 4: Low-Maintenance Plants
+  {
+    id: 'low-1',
+    name: 'Jade Plant',
+    cost: '$17',
+    price: 17,
+    category: 'Low-Maintenance Plants',
+    description: 'Resilient succulent with thick glossy leaves requiring minimal watering.',
+    image: '/images/jade-plant.jpg',
+  },
+  {
+    id: 'low-2',
+    name: 'ZZ Plant',
+    cost: '$24',
+    price: 24,
+    category: 'Low-Maintenance Plants',
+    description: 'Virtually indestructible plant thriving even in low light and dry soil.',
+    image: '/images/zz-plant.jpg',
+  },
+  {
+    id: 'low-3',
+    name: 'Golden Pothos',
+    cost: '$16',
+    price: 16,
+    category: 'Low-Maintenance Plants',
+    description: 'Fast-growing trailing vine that survives neglect and cleans interior air.',
+    image: '/images/pothos.jpg',
+  },
+  {
+    id: 'low-4',
+    name: 'Echeveria Succulent',
+    cost: '$12',
+    price: 12,
+    category: 'Low-Maintenance Plants',
+    description: 'Drought-tolerant geometric rosette suited for compact sunlit windowsills.',
+    image: '/images/echeveria.jpg',
+  },
+  {
+    id: 'low-5',
+    name: 'Monstera Deliciosa',
+    cost: '$32',
+    price: 32,
+    category: 'Low-Maintenance Plants',
+    description: 'Striking split leaves that adapt easily to regular household conditions.',
+    image: '/images/monstera.jpg',
+  },
+  {
+    id: 'low-6',
+    name: 'Cast Iron Plant',
+    cost: '$26',
+    price: 26,
+    category: 'Low-Maintenance Plants',
+    description: 'Earned its name from its remarkable ability to withstand dark corners and neglect.',
+    image: '/images/fiddle-leaf.jpg',
   },
 ];
 
-const categories = [
-  'All Plants',
-  'Indoor Plants',
-  'Outdoor Plants',
-  'Succulents',
+const categoryList = [
   'Air-Purifying Plants',
+  'Aromatic Fragrant Plants',
+  'Medicinal Plants',
+  'Low-Maintenance Plants',
 ];
 
-export default function ProductList({ onNavigateToCart }) {
+export default function ProductList({ onNavigateToCart, onNavigateHome }) {
   const dispatch = useDispatch();
   const cartItems = useSelector(selectCartItems);
-  const totalCartCount = useSelector(selectTotalQuantity);
 
-  const [selectedCategory, setSelectedCategory] = useState('All Plants');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [addedAnimationId, setAddedAnimationId] = useState(null);
+  let navigate = null;
+  try {
+    navigate = useNavigate();
+  } catch (e) {
+    // Router fallback
+  }
+
+  // Track added items by plant name to drive disabled state: disabled={!!addedToCart[plant.name]}
+  const [addedToCart, setAddedToCart] = useState({});
+  const [showCart, setShowCart] = useState(false);
+
+  // Synchronize addedToCart state with Redux cart items (so removing an item enables the button again)
+  useEffect(() => {
+    const currentCartMap = {};
+    cartItems.forEach((item) => {
+      currentCartMap[item.name] = true;
+    });
+    setAddedToCart(currentCartMap);
+  }, [cartItems]);
 
   const handleAddToCart = (plant) => {
     dispatch(addItem(plant));
-    setAddedAnimationId(plant.id);
-    setTimeout(() => {
-      setAddedAnimationId(null);
-    }, 1500);
+    setAddedToCart((prev) => ({
+      ...prev,
+      [plant.name]: true,
+    }));
   };
 
-  const filteredPlants = plantProducts.filter((plant) => {
-    const matchesCategory =
-      selectedCategory === 'All Plants' || plant.category === selectedCategory;
-    const matchesSearch =
-      plant.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      plant.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      plant.category.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
-  });
-
-  const getQuantityInCart = (id) => {
-    const item = cartItems.find((i) => i.id === id);
-    return item ? item.quantity : 0;
+  const handleOpenCart = () => {
+    if (onNavigateToCart) {
+      onNavigateToCart();
+    } else if (navigate) {
+      navigate('/cart');
+    } else {
+      setShowCart(true);
+    }
   };
+
+  const handleContinueShopping = () => {
+    setShowCart(false);
+  };
+
+  const handleGoHome = () => {
+    if (onNavigateHome) {
+      onNavigateHome();
+    } else if (navigate) {
+      navigate('/');
+    }
+  };
+
+  if (showCart) {
+    return (
+      <div className="product-list-page-wrapper">
+        <Navbar
+          onNavigateHome={handleGoHome}
+          onNavigatePlants={() => setShowCart(false)}
+          onNavigateCart={() => setShowCart(true)}
+        />
+        <CartItem onContinueShopping={handleContinueShopping} />
+      </div>
+    );
+  }
 
   return (
-    <div className="product-listing-page">
-      {/* Header Banner */}
-      <section className="listing-hero">
-        <div className="listing-hero-content">
-          <div className="badge-pill">
-            <Sparkles size={16} /> Certified Organic & Healthy Nursery Stock
-          </div>
-          <h1>Explore Our Green Collection</h1>
-          <p>
-            Hand-picked nursery plants delivered directly to your doorstep. Each plant is
-            carefully inspected, repotted in organic soil, and ready to thrive.
-          </p>
+    <div className="product-list-page-wrapper">
+      {/* Required navbar element */}
+      <Navbar
+        onNavigateHome={handleGoHome}
+        onNavigatePlants={() => setShowCart(false)}
+        onNavigateCart={handleOpenCart}
+      />
 
-          <div className="listing-stats-bar">
-            <div className="stat-item">
-              <span className="stat-number">100%</span>
-              <span className="stat-label">Healthy Plant Guarantee</span>
-            </div>
-            <div className="stat-divider"></div>
-            <div className="stat-item">
-              <span className="stat-number">4+</span>
-              <span className="stat-label">Plant Categories</span>
-            </div>
-            <div className="stat-divider"></div>
-            <div className="stat-item">
-              <span className="stat-number">Free</span>
-              <span className="stat-label">Plant Care Guide</span>
-            </div>
-          </div>
+      <header className="product-list-header">
+        <div className="header-badge">
+          <Sparkles size={16} /> Certified Botanical Nursery Stock
         </div>
-      </section>
+        <h1 className="header-title">Our Plant Collection</h1>
+        <p className="header-subtitle">
+          Hand-nurtured nursery plants divided into distinct botanical categories. Find your
+          ideal greenery companions below.
+        </p>
+      </header>
 
-      {/* Control Bar: Search & Categories */}
-      <section className="catalog-controls-container">
-        <div className="catalog-top-row">
-          <div className="category-tabs" role="tablist" aria-label="Plant Categories">
-            {categories.map((cat) => (
-              <button
-                key={cat}
-                type="button"
-                role="tab"
-                aria-selected={selectedCategory === cat}
-                className={`category-tab ${selectedCategory === cat ? 'active' : ''}`}
-                onClick={() => setSelectedCategory(cat)}
-              >
-                {cat === 'All Plants' && <Leaf size={14} className="tab-icon" />}
-                {cat}
-                {cat !== 'All Plants' && (
-                  <span className="cat-count">
-                    {plantProducts.filter((p) => p.category === cat).length}
-                  </span>
-                )}
-              </button>
-            ))}
-          </div>
+      <main className="product-categories-container">
+        {categoryList.map((category) => {
+          const plantsInCategory = plantProducts.filter(
+            (plant) => plant.category === category
+          );
 
-          <div className="search-and-cart-summary">
-            <div className="search-input-wrapper">
-              <Search size={18} className="search-icon" />
-              <input
-                type="text"
-                placeholder="Search plants by name or benefit..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                aria-label="Search plants"
-              />
-              {searchQuery && (
-                <button
-                  type="button"
-                  className="clear-search-btn"
-                  onClick={() => setSearchQuery('')}
-                  aria-label="Clear search"
-                >
-                  ✕
-                </button>
-              )}
-            </div>
+          return (
+            <section key={category} className="plant-category">
+              <h2 className="category-title">{category}</h2>
+              <div className="product-list">
+                {plantsInCategory.map((plant) => {
+                  const isAdded = !!addedToCart[plant.name];
 
-            {onNavigateToCart && (
-              <button
-                type="button"
-                className="cart-indicator-button"
-                onClick={onNavigateToCart}
-                aria-label={`View shopping cart with ${totalCartCount} items`}
-              >
-                <ShoppingBag size={20} />
-                <span className="cart-indicator-label">Cart</span>
-                <span className="cart-indicator-badge">{totalCartCount}</span>
-              </button>
-            )}
-          </div>
-        </div>
-      </section>
-
-      {/* Plant Grid */}
-      <main className="catalog-grid-container">
-        {filteredPlants.length === 0 ? (
-          <div className="empty-catalog-fallback">
-            <div className="fallback-icon">🌿</div>
-            <h3>No matching plants found</h3>
-            <p>
-              We couldn't find any plants matching "<strong>{searchQuery}</strong>" in{' '}
-              {selectedCategory}. Try adjusting your search term or select another category.
-            </p>
-            <button
-              type="button"
-              className="btn-primary"
-              onClick={() => {
-                setSearchQuery('');
-                setSelectedCategory('All Plants');
-              }}
-            >
-              Reset Filters
-            </button>
-          </div>
-        ) : (
-          <div className="plants-grid">
-            {filteredPlants.map((plant) => {
-              const qtyInCart = getQuantityInCart(plant.id);
-              const isJustAdded = addedAnimationId === plant.id;
-
-              return (
-                <article key={plant.id} className="plant-card">
-                  <div className="plant-card-image-wrap">
-                    <img
-                      src={plant.image}
-                      alt={plant.name}
-                      loading="lazy"
-                      onError={(e) => {
-                        // Fallback image if local image fails
-                        e.target.onerror = null;
-                        e.target.src =
-                          'https://images.unsplash.com/photo-1545241047-6083a3684587?w=600&auto=format&fit=crop&q=80';
-                      }}
-                    />
-                    <span className="plant-card-category-badge">{plant.category}</span>
-                    {qtyInCart > 0 && (
-                      <span className="in-cart-pill">
-                        <Check size={12} /> {qtyInCart} in Cart
-                      </span>
-                    )}
-                  </div>
-
-                  <div className="plant-card-body">
-                    <h3 className="plant-card-title">{plant.name}</h3>
-                    <p className="plant-card-description">{plant.description}</p>
-
-                    <div className="plant-card-care-meta">
-                      <span title="Sunlight Requirement">☀️ {plant.sunlight}</span>
-                      <span title="Watering Schedule">💧 {plant.water}</span>
-                    </div>
-
-                    <div className="plant-card-footer">
-                      <div className="plant-price-wrap">
-                        <span className="price-symbol">$</span>
-                        <span className="price-amount">{plant.price.toFixed(2)}</span>
+                  return (
+                    <div key={plant.id} className="product-card">
+                      <div className="product-image-container">
+                        <img
+                          src={plant.image}
+                          alt={plant.name}
+                          className="product-image"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src =
+                              'https://images.unsplash.com/photo-1545241047-6083a3684587?w=600&auto=format&fit=crop&q=80';
+                          }}
+                        />
+                        <span className="product-category-tag">{plant.category}</span>
                       </div>
 
-                      <button
-                        type="button"
-                        id={`add-to-cart-${plant.id}`}
-                        className={`btn-add-cart ${isJustAdded ? 'just-added' : ''}`}
-                        onClick={() => handleAddToCart(plant)}
-                        aria-label={`Add ${plant.name} to cart for $${plant.price.toFixed(2)}`}
-                      >
-                        {isJustAdded ? (
-                          <>
-                            <Check size={16} /> Added!
-                          </>
-                        ) : qtyInCart > 0 ? (
-                          <>
-                            <ShoppingBag size={16} /> Add More ({qtyInCart})
-                          </>
-                        ) : (
-                          <>
-                            <ShoppingBag size={16} /> Add to Cart
-                          </>
-                        )}
-                      </button>
-                    </div>
-                  </div>
-                </article>
-              );
-            })}
-          </div>
-        )}
-      </main>
+                      <div className="product-details">
+                        <h3 className="product-title">{plant.name}</h3>
+                        <p className="product-description">{plant.description}</p>
+                        <div className="product-price">{plant.cost}</div>
 
-      {/* Floating Cart Access Pill if cart has items */}
-      {totalCartCount > 0 && onNavigateToCart && (
-        <div className="floating-cart-bar">
-          <div className="floating-cart-inner">
-            <div className="floating-cart-info">
-              <ShoppingBag size={20} />
-              <span>
-                <strong>{totalCartCount}</strong> {totalCartCount === 1 ? 'item' : 'items'} in
-                your cart
-              </span>
-            </div>
-            <button
-              type="button"
-              className="floating-cart-btn"
-              onClick={onNavigateToCart}
-            >
-              Review Cart & Checkout <ArrowRight size={16} />
-            </button>
-          </div>
-        </div>
-      )}
+                        <button
+                          type="button"
+                          className={`product-button ${isAdded ? 'added' : ''}`}
+                          onClick={() => handleAddToCart(plant)}
+                          disabled={!!addedToCart[plant.name]}
+                          aria-label={`Add ${plant.name} to cart`}
+                        >
+                          {isAdded ? (
+                            <>
+                              <Check size={16} /> Added!
+                            </>
+                          ) : (
+                            <>
+                              <ShoppingBag size={16} /> Add to Cart
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
+      </main>
     </div>
   );
 }

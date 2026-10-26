@@ -10,14 +10,30 @@ export const cartSlice = createSlice({
   reducers: {
     addItem: (state, action) => {
       const product = action.payload;
-      const existingItem = state.items.find((item) => item.id === product.id);
+      const identifier = product.name || product.id;
+      const existingItem = state.items.find(
+        (item) => item.name === identifier || item.id === identifier
+      );
+
+      // Normalize numeric cost and display cost
+      const rawCost = product.cost !== undefined ? product.cost : product.price;
+      const numericPrice =
+        typeof rawCost === 'number'
+          ? rawCost
+          : parseFloat(String(rawCost || 0).replace(/[^0-9.]/g, '')) || 0;
+      const formattedCost =
+        typeof rawCost === 'string' && rawCost.startsWith('$')
+          ? rawCost
+          : `$${numericPrice.toFixed(0)}`;
+
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
         state.items.push({
-          id: product.id,
+          id: product.id || product.name,
           name: product.name,
-          price: Number(product.price),
+          cost: formattedCost,
+          price: numericPrice,
           image: product.image,
           category: product.category || 'Plants',
           description: product.description || '',
@@ -26,22 +42,32 @@ export const cartSlice = createSlice({
       }
     },
     removeItem: (state, action) => {
-      const id = typeof action.payload === 'object' && action.payload !== null 
-        ? action.payload.id 
-        : action.payload;
-      state.items = state.items.filter((item) => item.id !== id);
+      const payload = action.payload;
+      const targetIdentifier =
+        typeof payload === 'object' && payload !== null
+          ? payload.name || payload.id
+          : payload;
+
+      state.items = state.items.filter(
+        (item) => item.name !== targetIdentifier && item.id !== targetIdentifier
+      );
     },
     updateQuantity: (state, action) => {
-      const { id, quantity } = action.payload;
+      const { name, id, quantity } = action.payload || {};
+      const targetIdentifier = name || id;
       const parsedQuantity = parseInt(quantity, 10);
 
-      // Prevent invalid quantities; if non-positive, remove item
+      // If invalid or zero or negative quantity, remove item
       if (isNaN(parsedQuantity) || parsedQuantity <= 0) {
-        state.items = state.items.filter((item) => item.id !== id);
+        state.items = state.items.filter(
+          (item) => item.name !== targetIdentifier && item.id !== targetIdentifier
+        );
         return;
       }
 
-      const existingItem = state.items.find((item) => item.id === id);
+      const existingItem = state.items.find(
+        (item) => item.name === targetIdentifier || item.id === targetIdentifier
+      );
       if (existingItem) {
         existingItem.quantity = parsedQuantity;
       }
@@ -54,9 +80,15 @@ export const { addItem, removeItem, updateQuantity } = cartSlice.actions;
 // Selectors
 export const selectCartItems = (state) => state.cart.items;
 export const selectTotalQuantity = (state) =>
-  state.cart.items.reduce((total, item) => total + item.quantity, 0);
+  state.cart.items.reduce((total, item) => total + (item.quantity || 0), 0);
 export const selectTotalAmount = (state) =>
-  state.cart.items.reduce((total, item) => total + item.price * item.quantity, 0);
+  state.cart.items.reduce((total, item) => {
+    const unitPrice =
+      typeof item.price === 'number'
+        ? item.price
+        : parseFloat(String(item.cost || 0).replace(/[^0-9.]/g, '')) || 0;
+    return total + unitPrice * (item.quantity || 0);
+  }, 0);
 
 // Redux Store configuration
 export const store = configureStore({
